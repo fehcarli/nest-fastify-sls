@@ -6,7 +6,7 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
     port: 5432,
     username: 'postgres',
     password: 'postgres',
-    database: 'nest-fastify-sls-database',
+    database: 'nest-fastify-sls-db',
     entities: [__dirname + '/../**/*.entity.{js,ts}'],
     synchronize: true,
 }
