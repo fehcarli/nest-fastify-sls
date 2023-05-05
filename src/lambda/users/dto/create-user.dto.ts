@@ -21,12 +21,9 @@ export class CreateUserDto {
     @IsNotEmpty({
         message: 'Informe um endereço de email',
     })
-    @IsEmail(
-        {},
-        {
-          message: 'Informe um endereço de email válido',
-        },
-    )
+    @IsEmail({}, {
+        message: 'Informe um endereço de email válido',
+    })
     @MaxLength(50, {
         message: 'O endereço de email deve ter menos de 200 caracteres',
     })
