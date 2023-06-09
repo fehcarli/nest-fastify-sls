@@ -66,6 +66,11 @@ async function bootstrapServer(): Promise<NestApp> {
 }
 
 export const handler = async (event: APIGatewayProxyEvent, context: Context): Promise<APIGatewayProxyResult> => {
+    if (event.path === '/swagger') {
+        event.path = '/swagger/';
+    }
+    event.path = event.path.includes('swagger-ui') ? `/swagger${event.path}` : event.path;
+    
     if (!cachedNestApp) {
         cachedNestApp = await bootstrapServer();
     }

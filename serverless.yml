@@ -3,15 +3,18 @@ frameworkVersion: '3'
 plugins:
   - serverless-offline
   - serverless-typescript
+package:
+  patterns:
+    - '!.git/**'
+  excludeDevDependencies: true
 provider:
   name: aws
   runtime: nodejs18.x
 
 functions:
-  main:
-    handler: src/lambda.handler
+  function1:
+    handler: lambda.handler
     events:
     - http:
       method: ANY
       path: /{proxy+}
-
