@@ -60,8 +60,9 @@ export class UsersService {
     }
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll(): Promise<User[]> {
+    const users = await this.userRepository.find()
+    return users;
   }
 
   findOneByEmail(username: string) {

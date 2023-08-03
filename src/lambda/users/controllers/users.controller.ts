@@ -6,7 +6,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { ReturnUserDto } from '../dto/return-user.dto';
 
 @ApiTags('Users')
-@Controller('users')
+@Controller('api/v1/users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
@@ -20,7 +20,7 @@ export class UsersController {
   }
 
   @Get()
-  findAll() {
+  findAll(): Promise<any> {
     return this.usersService.findAll();
   }
 

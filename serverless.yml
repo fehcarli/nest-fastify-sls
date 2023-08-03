@@ -12,9 +12,17 @@ provider:
   runtime: nodejs18.x
 
 functions:
-  function1:
-    handler: lambda.handler
+  swagger:
+    handler: dist/lambda.handler
     events:
     - http:
-      method: ANY
-      path: /{proxy+}
+        method: ANY
+        path: /{proxy+}
+        cors: true
+  users:
+    handler: dist/lambda.handler
+    events:
+    - http:
+        method: GET
+        path: /api/v1/users
+        cors: true
