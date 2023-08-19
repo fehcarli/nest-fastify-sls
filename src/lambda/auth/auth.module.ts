@@ -18,17 +18,11 @@ import { UsersModule } from '../users/users.module';
     UsersModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: '6h'}
+      signOptions: { expiresIn: '6h' },
     }),
-    TypeOrmModule.forFeature([
-      User
-    ])
+    TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
-  providers: [
-    AuthService, 
-    BasicStrategy, 
-    JwtStrategy
-  ],
+  providers: [AuthService, BasicStrategy, JwtStrategy],
 })
 export class AuthModule {}

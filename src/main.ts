@@ -1,10 +1,13 @@
-import { NestFactory } from "@nestjs/core";
-import { FastifyAdapter, NestFastifyApplication } from "@nestjs/platform-fastify";
-import { AppModule } from "./app.module";
-import { ValidationPipe } from "@nestjs/common";
-import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { AppModule } from './app.module';
+import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import fastifyCsrf from '@fastify/csrf-protection';
-import helmet from '@fastify/helmet'
+import helmet from '@fastify/helmet';
 
 async function bootstrap() {
   const port = 3000;
@@ -13,13 +16,13 @@ async function bootstrap() {
     new FastifyAdapter(),
     {
       cors: true,
-      snapshot: true
-    }
+      snapshot: true,
+    },
   );
   app.useGlobalPipes(new ValidationPipe());
 
   await app.register(fastifyCsrf);
-  await app.register(helmet)
+  await app.register(helmet);
   await app.register(helmet, {
     contentSecurityPolicy: {
       directives: {

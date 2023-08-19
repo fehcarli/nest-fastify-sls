@@ -6,18 +6,21 @@ plugins:
 package:
   patterns:
     - '!.git/**'
-  excludeDevDependencies: true
 provider:
   name: aws
+  region: us-east-1
+  stage: ${sls:stage}
   runtime: nodejs18.x
-
+  memorySize: 512
+deploymentBucket:
+  name: nest-fastify-sls-{sls:stage}
 functions:
-  swagger:
+  auth:
     handler: dist/lambda.handler
     events:
     - http:
-        method: ANY
-        path: /{proxy+}
+        method: GET
+        path: /api/v1/login
         cors: true
   users:
     handler: dist/lambda.handler

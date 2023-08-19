@@ -11,7 +11,9 @@ import { ConfigModule } from '@nestjs/config';
     DevtoolsModule.register({
       http: process.env.NODE_ENV !== 'production',
     }),
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRoot(typeOrmConfig),
     AuthModule,
     UsersModule,
