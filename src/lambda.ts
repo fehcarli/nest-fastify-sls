@@ -23,16 +23,16 @@ interface NestApp {
 
 let cachedNestApp: NestApp;
 
-// function setupSwagger(app: INestApplication) {
-//   const config = new DocumentBuilder()
-//     .setTitle('API de Autenticação')
-//     .setDescription('API Lambda de gerenciamento de Usuários e Autenticação')
-//     .setVersion('1.0')
-//     .addTag('Users')
-//     .build();
-//   const document = SwaggerModule.createDocument(app, config);
-//   SwaggerModule.setup('swagger', app, document);
-// }
+function setupSwagger(app: INestApplication) {
+  const config = new DocumentBuilder()
+    .setTitle('API de Autenticação')
+    .setDescription('API Lambda de gerenciamento de Usuários e Autenticação')
+    .setVersion('1.0')
+    .addTag('Users')
+    .build();
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('swagger', app, document);
+}
 
 async function bootstrapServer(): Promise<NestApp> {
   const serverOptions: FastifyServerOptions = {
