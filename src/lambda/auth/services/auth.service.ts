@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/services/users.service';
 import { User } from 'src/database/entities/user.entity';
@@ -7,7 +7,7 @@ import { User } from 'src/database/entities/user.entity';
 export class AuthService {
   constructor(
     private readonly userService: UsersService,
-    private readonly jwtService: JwtService,
+    private jwtService: JwtService,
   ) {}
 
   async validateUser(username: string, password: string): Promise<any> {
@@ -25,18 +25,53 @@ export class AuthService {
     const accessToken = this.jwtService.sign(
       { email: payload.email },
       {
-        secret: '',
-        expiresIn: '60s',
+        secret: process.env.SECRET,
+        expiresIn: '1h',
       },
     );
 
     const refreshToken = this.jwtService.sign(
       { email: payload.email },
       {
-        secret: '',
-        expiresIn: '60s',
+        secret: process.env.REFRESH_SECRET,
+        expiresIn: '1h',
       },
     );
     return { access_token: accessToken, refresh_token: refreshToken };
+  }
+
+  private async checkRefreshToken(body: { refresh_token: any; }){
+    const refreshToken = body.refresh_token;
+
+    if (!refreshToken) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    const email = this.jwtService.decode(refreshToken)['email'];
+    const user = await this.userService.findOneByEmail(email);
+
+    if (!user) {
+      throw new NotFoundException('Usuário não encontrado');
+    }
+
+    try {
+      this.jwtService.verify(refreshToken, {
+        secret: process.env.REFRESH_SECRET,
+      });
+      return user;
+    } catch (err) {
+      if (err.name === 'JsonWebTokenError') {
+        throw new UnauthorizedException('Assinatura Inválida');
+      }
+      if (err.name === 'TokenExpiredError') {
+        throw new UnauthorizedException('Token Expirado');
+      }
+      throw new UnauthorizedException(err.name);
+    }
+  }
+
+  async reauthenticate(body: any) {
+    const payload: User = await this.checkRefreshToken(body); ////este método também será implementado abaixo
+    return this.generateToken(payload);
   }
 }

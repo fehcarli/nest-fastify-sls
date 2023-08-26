@@ -53,10 +53,10 @@ export class User extends BaseEntity {
   })
   role: string;
 
-  // @Column({
-  //   nullable: false,
-  // })
-  // salt: string;
+  @Column({
+    nullable: false,
+  })
+  salt: string;
 
   @Column({
     nullable: true,

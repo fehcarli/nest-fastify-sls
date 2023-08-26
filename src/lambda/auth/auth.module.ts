@@ -15,10 +15,7 @@ import { UsersModule } from '../users/users.module';
     ConfigModule,
     PassportModule,
     UsersModule,
-    JwtModule.register({
-      secret: process.env.JWT_CONSTANT,
-      signOptions: { expiresIn: '6h' },
-    }),
+    JwtModule,
     TypeOrmModule.forFeature([User]),
   ],
   controllers: [AuthController],
