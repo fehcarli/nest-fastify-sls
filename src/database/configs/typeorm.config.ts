@@ -15,7 +15,6 @@ export const typeOrmConfig: TypeOrmModuleOptions = {
   password: configService.getOrThrow('POSTGRES_PASSWORD'),
   synchronize: true,
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  migrations: ['database/migrations/**'],
 };
 
 export default new DataSource({

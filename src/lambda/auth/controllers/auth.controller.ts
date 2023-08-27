@@ -16,6 +16,6 @@ export class AuthController {
 
     @Post('refresh')
     async reanthenticate(@Body() body: any){
-        return await this.authService.reauthenticate(body);
+        return await this.authService.refreshUser(body);
     }
 }

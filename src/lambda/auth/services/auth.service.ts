@@ -1,10 +1,11 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/services/users.service';
 import { User } from 'src/database/entities/user.entity';
 
 @Injectable()
 export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
     private readonly userService: UsersService,
     private jwtService: JwtService,
@@ -70,7 +71,7 @@ export class AuthService {
     }
   }
 
-  async reauthenticate(body: any) {
+  async refreshUser(body: any) {
     const payload: User = await this.checkRefreshToken(body); ////este método também será implementado abaixo
     return this.generateToken(payload);
   }
