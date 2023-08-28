@@ -7,6 +7,7 @@ package:
     - '!node_modules/**'
 plugins:
   - serverless-offline
+  - serverless-typescript
 provider:
   name: aws
   region: us-east-1
@@ -29,11 +30,17 @@ functions:
     handler: dist/lambda.handler
     events:
     - http:
-        method: GET
+        method: POST
         path: /api/v1/login
-  users:
+    - http:
+        method: POST
+        path: /api/v1/refresh
+  user:
     handler: dist/lambda.handler
     events:
     - http:
         method: GET
-        path: /api/v1/users     
+        path: /api/v1/user/list
+    - http:
+        method: GET
+        path: /api/v1/user/{id}     

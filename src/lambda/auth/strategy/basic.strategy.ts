@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-local';
 
 @Injectable()
-export class BasicStrategy extends PassportStrategy(Strategy) {
+export class BasicStrategy extends PassportStrategy(Strategy, 'basic') {
   constructor(private readonly configService: ConfigService) {
     super({
       passReqToCallback: true,
@@ -13,7 +13,8 @@ export class BasicStrategy extends PassportStrategy(Strategy) {
 
   public validate = async (username: string, password: string): Promise<boolean> => {
     if (
-      this.configService.get<string>('HTTP_BASIC_USER') === username && this.configService.get<string>('HTTP_BASIC_PASS') === password
+      this.configService.get<string>('HTTP_BASIC_USER') === username && 
+      this.configService.get<string>('HTTP_BASIC_PASS') === password
     ) {
       return true;
     }

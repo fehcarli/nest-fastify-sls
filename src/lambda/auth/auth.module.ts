@@ -8,7 +8,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from 'src/database/entities/user.entity';
-import { UsersModule } from '../users/users.module';
+import { UsersModule } from '../user/user.module';
 
 @Module({
   imports: [

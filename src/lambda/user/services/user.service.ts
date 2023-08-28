@@ -14,7 +14,7 @@ import * as bcrypt from 'bcryptjs';
 import * as crypto from 'crypto';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -71,8 +71,8 @@ export class UsersService {
     return users;
   }
 
-  findOneByEmail(username: string) {
-    return this.userRepository.findOneBy({ email: username });
+  async findOneByEmail(username: string) {
+    return await this.userRepository.findOneBy({ email: username });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

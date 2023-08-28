@@ -1,13 +1,14 @@
 import { Injectable, Logger, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { UsersService } from '../../users/services/users.service';
+import { UserService } from '../../user/services/user.service';
 import { User } from 'src/database/entities/user.entity';
+import { RefreshAuthDto } from '../dto/refresh-auth.dto';
 
 @Injectable()
 export class AuthService {
   private readonly logger = new Logger(AuthService.name);
   constructor(
-    private readonly userService: UsersService,
+    private readonly userService: UserService,
     private jwtService: JwtService,
   ) {}
 
@@ -38,19 +39,20 @@ export class AuthService {
         expiresIn: '1h',
       },
     );
-    return { access_token: accessToken, refresh_token: refreshToken };
+    return { 
+      access_token: accessToken, 
+      refresh_token: refreshToken 
+    };
   }
 
-  private async checkRefreshToken(body: { refresh_token: any; }){
+  private async checkRefreshToken(body: any){
     const refreshToken = body.refresh_token;
-
     if (!refreshToken) {
       throw new NotFoundException('Usuário não encontrado');
     }
 
     const email = this.jwtService.decode(refreshToken)['email'];
     const user = await this.userService.findOneByEmail(email);
-
     if (!user) {
       throw new NotFoundException('Usuário não encontrado');
     }
@@ -71,8 +73,8 @@ export class AuthService {
     }
   }
 
-  async refreshUser(body: any) {
-    const payload: User = await this.checkRefreshToken(body); ////este método também será implementado abaixo
+  async refreshToken(body: any) {
+    const payload: User = await this.checkRefreshToken(body);
     return this.generateToken(payload);
   }
 }

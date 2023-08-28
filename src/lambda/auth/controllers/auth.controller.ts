@@ -10,12 +10,12 @@ export class AuthController {
     ){}
 
     @Post('login')
-    async login(@Body() body: AuthUserDto){
-        return await this.authService.validateUser(body.username, body.password);
+    async login(@Body() { username, password }: AuthUserDto){
+        return await this.authService.validateUser(username, password);
     }
 
     @Post('refresh')
-    async reanthenticate(@Body() body: any){
-        return await this.authService.refreshUser(body);
+    async refreshToken(@Body() body: any){
+        return await this.authService.refreshToken(body);
     }
 }
