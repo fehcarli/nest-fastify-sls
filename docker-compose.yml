@@ -19,6 +19,5 @@ services:
       - 8080:8080
     container_name: 'nest-fastify-adminer' 
     restart: always
-
 volumes:
   pg-data:

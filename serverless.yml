@@ -1,10 +1,46 @@
 service: nest-fastify-sls
 frameworkVersion: '3'
-
+package:
+  excludeDevDependencies: true
+  patterns:
+    - '!.git/**'
+    - '!node_modules/**'
+plugins:
+  - serverless-offline
+  - serverless-typescript
 provider:
   name: aws
+  region: us-east-1
+  stage: ${sls:stage}
   runtime: nodejs18.x
-
+  memorySize: 1024
+  timeout: 30 
+  versionFunctions: false
+  deploymentBucket:
+    name: nest-fastify-sls-${sls:stage} 
+  httpApi:
+    payload: "2.0"
+    disableDefaultEndpoint: false
+    cors: true
+  environment:
+    NODE_ENV: ${opt:stage}
+    REGION: ${opt:region, 'us-east-1'}
 functions:
-  function1:
-    handler: index.handler
+  auth:
+    handler: dist/lambda.handler
+    events:
+    - http:
+        method: POST
+        path: /api/v1/login
+    - http:
+        method: POST
+        path: /api/v1/refresh
+  user:
+    handler: dist/lambda.handler
+    events:
+    - http:
+        method: GET
+        path: /api/v1/user/list
+    - http:
+        method: GET
+        path: /api/v1/user/{id}     
